@@ -1,0 +1,60 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: keyhook - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\NGUYEN~1\LOCALS~1\Temp\RSPC4.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /FR"Release/" /Fp"Release/Keyhook.pch" /Yu"prehdr.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\Nguyen Hong Vu\My Documents\Downloads\Uk362src\Uk362\keyhook\keyhook.cpp"
+"C:\Documents and Settings\Nguyen Hong Vu\My Documents\Downloads\Uk362src\Uk362\keyhook\vietkey.cpp"
+"C:\Documents and Settings\Nguyen Hong Vu\My Documents\Downloads\Uk362src\Uk362\keyhook\encode.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\NGUYEN~1\LOCALS~1\Temp\RSPC4.tmp" 
+Creating temporary file "C:\DOCUME~1\NGUYEN~1\LOCALS~1\Temp\RSPC5.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /FR"Release/" /Fp"Release/Keyhook.pch" /Yc"prehdr.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\Nguyen Hong Vu\My Documents\Downloads\Uk362src\Uk362\keyhook\prehdr.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\NGUYEN~1\LOCALS~1\Temp\RSPC5.tmp" 
+Creating temporary file "C:\DOCUME~1\NGUYEN~1\LOCALS~1\Temp\RSPC6.tmp" with contents
+[
+user32.lib shell32.lib /nologo /stack:0x4e20,0x1000 /subsystem:windows /dll /incremental:no /pdb:"../Release/UKHook35.pdb" /machine:I386 /def:".\keyhook.def" /out:"../Release/UKHook35.dll" /implib:"../Release/UKHook35.lib" /heap:0x4e20,0x1000 
+".\Release\keyhook.obj"
+".\Release\prehdr.obj"
+".\Release\vietkey.obj"
+".\Release\encode.obj"
+]
+Creating command line "link.exe @C:\DOCUME~1\NGUYEN~1\LOCALS~1\Temp\RSPC6.tmp"
+<h3>Output Window</h3>
+Compiling...
+prehdr.cpp
+Compiling...
+keyhook.cpp
+vietkey.cpp
+encode.cpp
+Generating Code...
+Linking...
+   Creating library ../Release/UKHook35.lib and object ../Release/UKHook35.exp
+Creating command line "bscmake.exe /nologo /o"../Release/Keyhook.bsc"  ".\Release\prehdr.sbr" ".\Release\keyhook.sbr" ".\Release\vietkey.sbr" ".\Release\encode.sbr""
+Creating browse info file...
+<h3>Output Window</h3>
+Creating temporary file "C:\DOCUME~1\NGUYEN~1\LOCALS~1\Temp\RSPCA.bat" with contents
+[
+@echo off
+copy ..\release\ukhook35.dll ..\urelease\ukhook35.dll
+]
+Creating command line "C:\DOCUME~1\NGUYEN~1\LOCALS~1\Temp\RSPCA.bat"
+
+        1 file(s) copied.
+
+
+
+<h3>Results</h3>
+UKHook35.dll - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

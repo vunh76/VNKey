@@ -1,0 +1,111 @@
+
+Option Explicit
+Private Const WH_KEYBOARD = 2
+Private Const WH_MOUSE = 7
+Private Const GWL_STYLE = (-16)
+Private Const ES_ucaseCASE = &H8&
+Private Declare Function SetWindowsHookEx Lib "user32" Alias "SetWindowsHookExA" (ByVal idHook As Long, ByVal lpfn As Long, ByVal hmod As Long, ByVal dwThreadId As Long) As Long
+Private Declare Function UnhookWindowsHookEx Lib "user32" (ByVal hHook As Long) As Long
+Private Declare Function LoadLibraryEx Lib "kernel32" Alias "LoadLibraryExA" (ByVal lpLibFileName As String, ByVal hFile As Long, ByVal dwFlags As Long) As Long
+Private Declare Function LoadLibrary Lib "kernel32" Alias "LoadLibraryA" (ByVal lpLibFileName As String) As Long
+Private Declare Function GetProcAddress Lib "kernel32" (ByVal hModule As Long, ByVal lpProcName As String) As Long
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
+
+'----VietKey.DLL Interface --
+'Initialize all data that needed for Vietnamese keyboard.
+Private Declare Sub InitKeyHook Lib "VietKey.DLL" (ByVal hKeyHook As Long, ByVal hMouseHook As Long)
+'Switch between TELEX (0) and VNI (1) typing mode
+Private Declare Sub ChangeTypeMode Lib "VietKey.DLL" (ByVal nMode As Long)
+
+'Hook handles for Keyboard, Mouse
+Private hKeyHook As Long
+Private hMouseHook As Long
+
+'Hook Function addresse handles
+Private hKeyProc As Long
+Private hMouseProc As Long
+
+'Handle to DLL which contain Hook functions
+Private hDLL As Long
+
+' Return True if a file exists
+Function FileExists(filename As String) As Boolean
+
+   Dim fso As FileSystemObject
+   Set fso = New FileSystemObject
+
+   'On Error GoTo ErrorHandler
+   If fso.FileExists(filename) Then
+      FileExists = True
+   Else
+      FileExists = False
+   End If
+   Exit Function
+
+   'ErrorHandler:
+   ' if an error occurs, this function returns False
+End Function
+
+Private Sub Form_Load()
+    Call ResizeControls
+  
+    '[CONFIGURATION SYSTEM]
+    'Code for Vietnamese support
+    '1. Loading VietKey.DLL, store it's handle in hDLL
+    hDLL = LoadLibrary("VietKey.DLL")
+    '2. Get hooking function address for keyboard and mouse in VietKey.DLL
+    hKeyProc = GetProcAddress(hDLL, "MyKeyHook")
+    hMouseProc = GetProcAddress(hDLL, "MyMouseHook")
+    
+    '3. Hooking Keyboard and Mouse
+    hKeyHook = SetWindowsHookEx(WH_KEYBOARD, hKeyProc, hDLL, App.ThreadID)
+    hMouseHook = SetWindowsHookEx(WH_MOUSE, hMouseProc, hDLL, App.ThreadID)
+    
+    '4. Initiallize all hooking data. TELEX is the default
+    InitKeyHook hKeyHook, hMouseHook
+    
+    '5. Set txtSerial to convert all characters to upercase automatically
+    SetWindowLong txtSerial.hwnd, GWL_STYLE, GetWindowLong(txtSerial.hwnd, GWL_STYLE) Or ES_ucaseCASE
+End Sub
+
+Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
+  If KeyCode = vbKeyZ And (Shift And 7) = 4 Then
+    If Option1(2).Value = False Then
+      Option1(2).Value = True
+    Else
+      If vnmode = 0 Then
+        Option1(1).Value = True
+      Else
+        Option1(0).Value = True
+      End If
+    End If
+  End If
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+    ChangeTypeMode -1
+    UnhookWindowsHookEx hKeyHook
+    UnhookWindowsHookEx hMouseHook
+End Sub
+
+Private Sub Option1_Click(Index As Integer)
+    Select Case Index
+        Case 0
+                ChangeTypeMode 0
+                vnmode = 0
+        Case 1
+                ChangeTypeMode 1
+                vnmode = 1
+        Case 2
+            ChangeTypeMode -1
+    End Select
+End Sub
+
+Private Sub txtSchoolName_GotFocus()
+        If vnmode = 0 Then
+                Option1(0).Value = True
+        Else
+                Option1(1).Value = True
+        End If
+End Sub
