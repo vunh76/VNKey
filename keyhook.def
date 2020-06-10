@@ -19,7 +19,7 @@
 ;--------------------------------------------------------------------------------
 LIBRARY UKHook35
 EXPORTS
-   MyKeyHook      @1
+MyKeyHook      @1
    MyMouseHook    @2
    InitKeyHook    @3
    ChangeTypeMode @4

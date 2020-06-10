@@ -132,7 +132,7 @@ BOOL APIENTRY DllMain(HINSTANCE hModule, DWORD reason, LPVOID reserved)
                 PAGE_READWRITE,      /* read/write access  */ 
                 0,                   /* size: high 32-bits */ 
                 sizeof(SharedMem),   /* size: low 32-bits  */ 
-                _TEXT("VietKeyHookSharedMem"));/* name of map object */ 
+                _TEXT("UniKeyHookSharedMem3.65 Release"));/* name of map object */ 
             if (hMapObject == NULL) 
                 return FALSE; 
 			
@@ -716,13 +716,36 @@ void SwitchMode()
 //-------------------------------------------------
 void ModifyStatusIcon()
 {
-    return;
+    NOTIFYICONDATA tnid; 
+
+    tnid.cbSize = sizeof(NOTIFYICONDATA);
+    tnid.hWnd = pShMem->hMainDlg;
+	tnid.uID = ID_VIETKEY_ICON;
+	if (pShMem->vietKey) {
+		tnid.hIcon = pShMem->hVietIcon;
+		lstrcpy(tnid.szTip,_TEXT("Click to turn off Vietnamese mode"));
+
+	} else {
+		tnid.hIcon = pShMem->hEnIcon;
+		lstrcpy(tnid.szTip,_TEXT("Click to turn on Vietnamese mode"));
+	}
+    tnid.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP; 
+    tnid.uCallbackMessage = pShMem->iconMsgId;
+	Shell_NotifyIcon(pShMem->iconShown?NIM_MODIFY:NIM_ADD, &tnid);
+	pShMem->iconShown = 1;
 } 
 
 //-------------------------------------------------
 void DeleteStatusIcon()
 {
-	return;
+    NOTIFYICONDATA tnid; 
+	if (pShMem->iconShown) {
+		tnid.cbSize = sizeof(NOTIFYICONDATA); 
+		tnid.hWnd = pShMem->hMainDlg;
+		tnid.uID = ID_VIETKEY_ICON;
+		Shell_NotifyIcon(NIM_DELETE, &tnid); 
+		pShMem->iconShown = 0;
+	}
 }
 
 //-------------------------------------------------

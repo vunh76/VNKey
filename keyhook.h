@@ -103,9 +103,6 @@ void SetSwitchKey(int swKey);
 
 SharedMem *GetSharedMem();
 
-void __stdcall InitKeyHook(HHOOK hKeyHook, HHOOK hMouseHook);
-void __stdcall ChangeTypeMode(int typeMode);
-
 #define WM_HOOK_TOOLKIT_SHORTCUT (WM_USER+102)
 #define WM_HOOK_PANEL_SHORTCUT (WM_USER+103)
 #define WM_HOOK_FLY_CONVERT (WM_USER+104)
