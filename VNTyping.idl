@@ -1,0 +1,40 @@
+// VNTyping.idl : IDL source for VNTyping.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (VNTyping.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+	[
+		object,
+		uuid(E875250C-C91E-4DC2-8250-AA79C321EEDA),
+		dual,
+		helpstring("IHook Interface"),
+		pointer_default(unique)
+	]
+	interface IHook : IDispatch
+	{
+		[id(1), helpstring("method RegisterVNKeyboard")] HRESULT RegisterVNKeyboard();
+		[id(2), helpstring("method UnregisterVNKeyboard")] HRESULT UnregisterVNKeyboard();
+	};
+
+[
+	uuid(B18D2B4D-0FFE-4943-BBCA-FDBCB0E7A886),
+	version(1.0),
+	helpstring("VNTyping 1.0 Type Library")
+]
+library VNTYPINGLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(3A3B9F73-D41A-4F34-A344-0A97770A267B),
+		helpstring("Hook Class")
+	]
+	coclass Hook
+	{
+		[default] interface IHook;
+	};
+};

@@ -1,0 +1,26 @@
+HKCR
+{
+	VNTyping.Hook.1 = s 'Hook Class'
+	{
+		CLSID = s '{3A3B9F73-D41A-4F34-A344-0A97770A267B}'
+	}
+	VNTyping.Hook = s 'Hook Class'
+	{
+		CLSID = s '{3A3B9F73-D41A-4F34-A344-0A97770A267B}'
+		CurVer = s 'VNTyping.Hook.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {3A3B9F73-D41A-4F34-A344-0A97770A267B} = s 'Hook Class'
+		{
+			ProgID = s 'VNTyping.Hook.1'
+			VersionIndependentProgID = s 'VNTyping.Hook'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{B18D2B4D-0FFE-4943-BBCA-FDBCB0E7A886}'
+		}
+	}
+}
