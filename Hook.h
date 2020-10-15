@@ -33,6 +33,7 @@ public:
 private:
 	HHOOK m_hMouseHook;
 	HHOOK m_hKeyHook;
+	HHOOK m_llKeyHook;
 };
 
 #endif //__HOOK_H_

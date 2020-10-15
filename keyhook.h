@@ -87,6 +87,7 @@ struct SharedMem {
 //----------------------------------------------------------------
 // Interface functions 
 LRESULT CALLBACK MyKeyHook(int code, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK MyLLKeyHook(int code, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK MyMouseHook(int code, WPARAM wParam, LPARAM lParam);
 HINSTANCE GetVietHookDll();
 void __stdcall InitKeyHook(HHOOK hKeyHook, HHOOK hMouseHook);

@@ -9,6 +9,7 @@
 #include "prehdr.h"
 #include "resource.h"
 #include <initguid.h>
+#include <winuser.h>
 #include "VNTyping.h"
 
 #include "VNTyping_i.c"
@@ -222,6 +223,25 @@ void InitProcess()
 	ViKeyboardLayout = LoadKeyboardLayout(VI_KEYBOARD_LAYOUT, KLF_REPLACELANG | KLF_SUBSTITUTE_OK);
 	OriginalLayout = GetKeyboardLayout(0);
 	LayoutChangeForced = 0;
+}
+
+LRESULT CALLBACK MyLLKeyHook ( int nCode, WPARAM wParam, LPARAM lParam ) {
+	if (nCode < 0) {
+		return CallNextHookEx(pShMem->llKeyHook, nCode,wParam, lParam);
+	}
+	KBDLLHOOKSTRUCT *keyboardData = (KBDLLHOOKSTRUCT *)lParam;
+	INPUT inputs[1];
+	inputs[0].ki.dwFlags = 0;
+	inputs[0].type = INPUT_KEYBOARD;
+	if (wParam == WM_KEYUP || wParam == WM_SYSKEYUP) {
+        inputs[0].ki.dwFlags = KEYEVENTF_KEYUP;
+    }
+	inputs[0].ki.wVk = keyboardData->vkCode;
+	inputs[0].ki.wScan = keyboardData->scanCode;
+	inputs[0].ki.time = keyboardData->time;
+	inputs[0].ki.dwExtraInfo = 1;
+	SendInput(1, inputs, sizeof(INPUT));
+	return 1;
 }
 
 //-------------------------------------------------
